@@ -1,38 +1,49 @@
-import React, { useState } from 'react';
-
-import { AppBox, Section, FlexBox, RightBox } from './GeneralContainers';
-import { ContactForm } from './ContactForm/ContactForm';
-import { ContactList } from './ContactList/ContactList';
-import { Filter } from './Filter/Filter';
-
-import { BsFillTelephoneFill } from 'react-icons/bs';
-import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { lazy, useEffect } from 'react';
+import { Route, Routes } from 'react-router-dom';
+import { Layout, PublicRoute, PrivateRoute } from './Other';
+import { refreshUser } from 'redux/auth/operations';
+import { useAppDispatch } from 'hooks';
+
+import NotFound from 'pages/NotFound';
+
+const HomePage = lazy(() => import('pages/Home'));
+const RegisterPage = lazy(() => import('pages/Register'));
+const LoginPage = lazy(() => import('pages/Login'));
+const ContactsPage = lazy(() => import('pages/Contacts'));
+// const NotFound = lazy(() => import('pages/NotFound'));
 
 export const App: React.FC = () => {
-  const [filterValue, setFilterValue] = useState<string>('');
+  const dispatch = useAppDispatch();
 
-  const handleOnFilterChange = (value: string) => {
-    setFilterValue(value);
-  };
+  useEffect(() => {
+    dispatch(refreshUser());
+  }, [dispatch]);
 
   return (
-    <AppBox>
-      <Section title="Phonebook" icon={<BsFillTelephoneFill />}>
-        <FlexBox>
-          <ContactForm title="Add contact" />
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<PublicRoute component={<HomePage />} />} />
 
-          <RightBox>
-            <Filter
-              title="Contacts"
-              value={filterValue}
-              handleOnChange={handleOnFilterChange}
-            />
-            <ContactList filterValue={filterValue} />
-          </RightBox>
-        </FlexBox>
-      </Section>
-      <ToastContainer position="bottom-right" newestOnTop />
-    </AppBox>
+        <Route
+          path="/register"
+          element={<PublicRoute component={<RegisterPage />} restricted />}
+        />
+
+        <Route
+          path="/login"
+          element={<PublicRoute component={<LoginPage />} restricted />}
+        />
+
+        <Route
+          path="/contacts"
+          element={
+            <PrivateRoute redirectTo={'/login'} component={<ContactsPage />} />
+          }
+        />
+      </Route>
+
+      <Route path="*" element={<PublicRoute component={<NotFound />} />} />
+    </Routes>
   );
 };

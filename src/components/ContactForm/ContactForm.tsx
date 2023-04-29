@@ -1,10 +1,8 @@
 import { Formik } from 'formik';
 import * as yup from 'yup';
 
-import {
-  usePostContactMutation,
-  useGetContactsQuery,
-} from 'redux/contactsSlice/contactsSlice';
+import { addContact } from 'redux/contacts/operations';
+import { useAppDispatch, useAuth, useContacts } from 'hooks';
 import {
   ERROR,
   SUCCESS,
@@ -24,7 +22,7 @@ import {
   FormMainBox,
   H2,
 } from './ContactForm.styled';
-import { Spinner } from 'components/Spiner/Spiner';
+import { Spinner } from 'components/Other';
 
 import { IContactValues } from 'types';
 
@@ -33,16 +31,20 @@ interface IProps {
 }
 
 export const ContactForm: React.FC<IProps> = ({ title = 'Add contact' }) => {
-  const {
-    data: contacts,
-    isLoading,
-    isError,
-  } = useGetContactsQuery('', {
-    pollingInterval: 3000,
-    refetchOnMountOrArgChange: true,
-    skip: false,
-  });
-  const [postContact, { isLoading: isPosting }] = usePostContactMutation();
+  const dispatch = useAppDispatch();
+  const { isLoading, isError, contacts } = useContacts();
+  const { isLoggedIn, isRefreshing, user } = useAuth();
+
+  // const {
+  //   data: contacts,
+  //   isLoading,
+  //   isError,
+  // } = useGetContactsQuery('', {
+  //   pollingInterval: 3000,
+  //   refetchOnMountOrArgChange: true,
+  //   skip: false,
+  // });
+  // const [postContact, { isLoading: isPosting }] = usePostContactMutation();
 
   const initialValues: IContactValues = {
     name: '',
@@ -90,8 +92,8 @@ export const ContactForm: React.FC<IProps> = ({ title = 'Add contact' }) => {
         throw Error({ name: `Number "${number}" is already in your contacts` });
       }
 
-      await postContact(contact);
-      myToast('✅ Contact was successfully', SUCCESS);
+      await dispatch(addContact(contact));
+      myToast('✅ Contact was successfully added', SUCCESS);
       resetForm();
     } catch (err: any) {
       myToast(`❌ We couldn't add your contact, (${err.props?.name})`, ERROR);
@@ -119,7 +121,8 @@ export const ContactForm: React.FC<IProps> = ({ title = 'Add contact' }) => {
               <Label htmlFor="number">Number</Label>
               <Error name="number" />
             </FormBox>
-            <Button type="submit" disabled={isPosting}>
+            <Button type="submit">
+              {/* Тут бажано дізейблити на isPosting */}
               Add contact
             </Button>
           </MyForm>

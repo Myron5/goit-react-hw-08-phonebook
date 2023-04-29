@@ -36,7 +36,12 @@ export const Container = styled.div`
   }
 `;
 
-const SectionBox = styled.section`
+interface ISectionBoxProps {
+  first?: boolean;
+  last?: boolean;
+}
+
+export const SectionBox = styled.section<ISectionBoxProps>`
   padding-top: 40px;
   padding-bottom: 40px;
 
@@ -49,9 +54,12 @@ const SectionBox = styled.section`
     padding-top: 90px;
     padding-bottom: 90px;
   }
+
+  ${props => props.first && 'padding-top: 0 !important'};
+  ${props => props.last && 'padding-bottom: 0 !important'};
 `;
 
-const FlexDiv = styled.div`
+export const FlexDiv = styled.div`
   display: flex;
   align-items: center;
   gap: 15px;
@@ -66,7 +74,7 @@ const FlexDiv = styled.div`
   }
 `;
 
-const H1 = styled.h1`
+export const H1 = styled.h1`
   color: ${colors.txtBlack};
   font-size: ${adaptFonts.md};
 `;
@@ -110,11 +118,31 @@ export const CenterBox = styled.div`
   place-items: center;
 `;
 
+export const FooterTxt = styled.p`
+  padding: 40px 80px;
+  text-align: center;
+  color: ${colors.txtWhite};
+  ${adaptFonts.sm}
+  background-color: #000000;
+`;
+
 // -------------------------- Added finish -------------------------------
 
-export const Section = ({ title, icon, children }: ISectionProps) => {
+interface ISectionProps extends ISectionBoxProps {
+  title: string;
+  icon: ReactNode;
+  children: ReactNode | ReactNode[];
+}
+
+export const Section = ({
+  title,
+  icon,
+  children,
+  first = false,
+  last = false,
+}: ISectionProps) => {
   return (
-    <SectionBox>
+    <SectionBox first={first} last={last}>
       <Container>
         <FlexDiv>
           <H1>{title}</H1>
@@ -125,9 +153,3 @@ export const Section = ({ title, icon, children }: ISectionProps) => {
     </SectionBox>
   );
 };
-
-interface ISectionProps {
-  title: string;
-  icon: ReactNode;
-  children: ReactNode | ReactNode[];
-}

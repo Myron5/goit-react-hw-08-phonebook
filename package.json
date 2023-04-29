@@ -1,8 +1,8 @@
 {
-  "name": "goit-react-hw-06-phonebook",
+  "name": "goit-react-hw-08-phonebook",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://Myron5.github.io/goit-react-hw-06-phonebook/",
+  "homepage": "https://Myron5.github.io/goit-react-hw-08-phonebook/",
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.3",
     "@testing-library/jest-dom": "^5.16.3",
@@ -16,8 +16,10 @@
     "react-dom": "^18.1.0",
     "react-icons": "^4.8.0",
     "react-redux": "^8.0.5",
+    "react-router-dom": "^6.10.0",
     "react-scripts": "5.0.1",
     "react-toastify": "^9.1.2",
+    "redux": "^4.2.1",
     "redux-persist": "^6.0.0",
     "styled-components": "^5.3.6",
     "typescript": "^4.9.5",

@@ -1,6 +1,6 @@
 import styled, { keyframes } from 'styled-components';
 import { CgSpinner } from 'react-icons/cg';
-import { CenterBox } from 'components/GeneralContainers';
+import { CenterBox } from 'components/Other';
 
 const spin = keyframes`
 0% {

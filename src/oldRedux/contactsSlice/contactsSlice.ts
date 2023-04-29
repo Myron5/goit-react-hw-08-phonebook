@@ -34,9 +34,9 @@ const contactsSlice = createSlice({
         contacts,
       }: IAddContactPrepareProps): { payload: IAddContactAction } => {
         const id = uniqueId(contacts);
-        const createdAt = `${new Date()}`;
+        // const createdAt = `${new Date()}`;
         const { name, number } = contact;
-        return { payload: { contact: { id, name, number, createdAt } } };
+        return { payload: { contact: { id, name, number /*, createdAt */ } } };
       },
     },
     deleteContact: (state, action) => {

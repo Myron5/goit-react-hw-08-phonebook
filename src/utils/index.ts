@@ -6,3 +6,4 @@ export * from './custonFonts';
 export * from './contactsLS';
 export * from './transformDate';
 export * from './myToast';
+export * from './lazyImport';

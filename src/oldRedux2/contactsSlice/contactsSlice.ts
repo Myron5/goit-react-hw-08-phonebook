@@ -11,8 +11,8 @@ export const contactsApi = createApi({
   tagTypes: ['Contacts'],
   endpoints: builder => ({
     //   Повертає масив контактів
-    getContacts: builder.query<IContact[], string>({
-      query: id => ({ url: '/contacts' }),
+    getContacts: builder.query<IContact[], any>({
+      query: _ => ({ url: '/contacts' }),
       providesTags: ['Contacts'],
     }),
 
