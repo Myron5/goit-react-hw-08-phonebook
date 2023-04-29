@@ -2,7 +2,7 @@ import { Formik } from 'formik';
 import * as yup from 'yup';
 
 import { addContact } from 'redux/contacts/operations';
-import { useAppDispatch, useAuth, useContacts } from 'hooks';
+import { useAppDispatch, useContacts } from 'hooks';
 import {
   ERROR,
   SUCCESS,
@@ -33,7 +33,6 @@ interface IProps {
 export const ContactForm: React.FC<IProps> = ({ title = 'Add contact' }) => {
   const dispatch = useAppDispatch();
   const { isLoading, isError, contacts } = useContacts();
-  const { isLoggedIn, isRefreshing, user } = useAuth();
 
   // const {
   //   data: contacts,
@@ -67,7 +66,6 @@ export const ContactForm: React.FC<IProps> = ({ title = 'Add contact' }) => {
       </FormMainBox>
     );
   } else if (isError || !contacts) {
-    myToast("❌ We didn't get your contacts", ERROR);
     return (
       <FormMainBox>
         <H2>{title}</H2>Error

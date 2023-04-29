@@ -9,6 +9,7 @@ import {
   Email,
   Button,
 } from './UserMenu.styled';
+import { ERROR, myToast } from 'utils';
 
 export const UserMenu: React.FC = () => {
   const { isLoggedIn } = useAuth();
@@ -19,7 +20,12 @@ export const UserMenu: React.FC = () => {
   } = useAuth();
 
   const handleOnLogOut = async () => {
-    await dispatch(logOut());
+    try {
+      await dispatch(logOut());
+    } catch (err: any) {
+      console.log(err);
+      myToast("❌ We didn't get your contacts", ERROR);
+    }
   };
 
   return (

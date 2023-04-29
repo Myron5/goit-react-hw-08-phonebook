@@ -6,6 +6,7 @@ import {
   RegisterFormStyled,
   Title,
 } from './RegisterForm.styled';
+import { ERROR, myToast } from 'utils';
 
 export const RegisterForm: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -26,9 +27,13 @@ export const RegisterForm: React.FC = () => {
     const email = form.elements.email.value;
     const password = form.elements.password.value;
 
-    await dispatch(register({ name, email, password }));
-
-    form.reset();
+    try {
+      await dispatch(register({ name, email, password }));
+      form.reset();
+    } catch (err: any) {
+      console.log(err);
+      myToast("❌ We didn't get your contacts", ERROR);
+    }
   };
 
   return (

@@ -8,13 +8,23 @@ import { Filter } from 'components/Filter/Filter';
 import { BsFillTelephoneFill } from 'react-icons/bs';
 import { useAppDispatch } from 'hooks';
 import { fetchContacts } from 'redux/contacts/operations';
+import { ERROR, myToast } from 'utils';
 
 const Contacts: React.FC = () => {
   const [filterValue, setFilterValue] = useState<string>('');
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(fetchContacts());
+    const dispatchContacts = async () => {
+      try {
+        await dispatch(fetchContacts());
+      } catch (err: any) {
+        console.log(err);
+        myToast("❌ We didn't get your contacts", ERROR);
+      }
+    };
+
+    dispatchContacts();
   }, [dispatch]);
 
   const handleOnFilterChange = (value: string) => {

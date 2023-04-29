@@ -1,6 +1,7 @@
 import { useAppDispatch } from 'hooks';
 import { logIn } from 'redux/auth/operations';
 import { Button, Input, LogInFormStyled, Title } from './LogInForm.styled';
+import { ERROR, myToast } from 'utils';
 
 export const LogInForm: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -19,9 +20,14 @@ export const LogInForm: React.FC = () => {
     const email = form.elements.email.value;
     const password = form.elements.password.value;
 
-    await dispatch(logIn({ email, password }));
+    try {
+      await dispatch(logIn({ email, password }));
 
-    form.reset();
+      form.reset();
+    } catch (err: any) {
+      console.log(err);
+      myToast("❌ We didn't get your contacts", ERROR);
+    }
   };
 
   return (
